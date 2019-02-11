@@ -1,0 +1,4 @@
+hem:		task.c  hem.c task.h 
+		gcc -o hem hem.c task.c -lm -lpthread 
+
+

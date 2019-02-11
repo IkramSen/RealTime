@@ -1,0 +1,88 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include "task.h"
+#include "func.h"
+#include <pthread.h>
+#include <sched.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+
+
+
+int periode1 ,periode2;
+int deadline1, deadline2;
+double h;
+double prime1, prime2;
+int c;
+double dbfTotal;
+
+pthread_t th1, th2;
+pthread_attr_t attr1,attr2;
+struct sched_param sched1,sched2;
+   
+
+int main(void)
+{
+ printf("------------------------------------------------\n");
+ printf("\t DBF function\n");
+ printf("------------------------------------------------\n");
+ printf("please input period and deadline for Task A\n");
+ scanf("%d%d",&periode1,&deadline1);
+ printf("please input period and deadline for Task B\n");
+ scanf("%d%d",&periode2,&deadline2);
+ 
+ /* calcule de hyperperiode   */
+ h= LCM(periode1,periode2);
+ 
+ pthread_attr_init(&attr1); 		//initialise les attributs par défauts
+ pthread_attr_init(&attr2);
+ 
+ pthread_attr_setschedpolicy(&attr1,SCHED_FIFO);
+ pthread_attr_setschedpolicy(&attr2,SCHED_FIFO);
+
+ 
+
+	
+	if (deadline1<deadline2)  {
+        (sched1.sched_priority)++;
+	pthread_attr_setschedparam(&attr1,&sched1); 
+	pthread_attr_setschedparam(&attr2,&sched2);
+	printf("Tache 1 est plus prioritaire\n") ;
+	pthread_create(&th1, &attr1, tache1, NULL);
+	pthread_create(&th2, &attr2, tache2, NULL);
+
+	}
+	else {
+	(sched2.sched_priority)++;
+	pthread_attr_setschedparam(&attr2,&sched2);
+	pthread_attr_setschedparam(&attr1,&sched1); 
+	printf("Tache 2 est plus prioritaire\n") ;
+	pthread_create(&th2, &attr2, tache2, NULL);
+	pthread_create(&th1, &attr1, tache1, NULL);
+	
+	
+	}
+
+	   
+	   //pthread_join (th1, NULL);
+	   //pthread_join (th2, NULL);
+
+	   pthread_join (th1, (void*) &prime1);
+	   pthread_join (th2, (void*) &prime2);
+
+	   printf("Here is the main\n") ;
+
+           printf("dbf1 in main %f.\n", prime1);
+           printf("dbf2 in main %f.\n", prime2);
+
+	   
+	   dbfTotal=dbfFinal(prime1, prime2);
+ 	   isSchedu(dbfTotal);
+           
+	   	    
+	   printf("End main\n") ;
+
+	    return EXIT_SUCCESS;
+
+
+}
