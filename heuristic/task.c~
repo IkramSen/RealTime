@@ -245,8 +245,7 @@ void triC(struct Processor **pr, int size)
 }
 
 
-/*----------Creer un tableau de structure Task contenant les element d'une file d'attente (par proc)--------------*/
- 
+/*----------Creer un tableau de structure Task contenant les element d'une file d'attente (par proc)--------------*/ 
 void TransfFileTask(File *file, struct Task **fs, int N, int FileNumber){
 
 
